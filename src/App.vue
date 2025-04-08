@@ -1,6 +1,7 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import Info from './components/info.vue'
+import ProductCard from './components/ProductCard.vue'
 </script>
 
 <template>
@@ -14,6 +15,20 @@ import Info from './components/info.vue'
   </div>
   <HelloWorld msg="Vite + Vue"  />
   <Info name="Luis Eduardo Urdaneta Martucci" course="Programación Web Avanzada" />
+  
+  <h2>Ejercicios PEC 2</h2>
+  <div class="products-container">
+    <ProductCard 
+      title="Laptop" 
+      :price="999.99" 
+      :inStock="true" 
+    />
+    <ProductCard 
+      title="Smartphone" 
+      :price="499.99" 
+      :inStock="false" 
+    />
+  </div>
 </template>
 
 <style scoped>
@@ -28,5 +43,11 @@ import Info from './components/info.vue'
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.products-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 </style>
