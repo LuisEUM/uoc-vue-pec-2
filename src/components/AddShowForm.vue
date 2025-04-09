@@ -35,6 +35,17 @@
             class="form-control"
           />
         </div>
+
+        <div class="form-group">
+          <label>Year:</label>
+          <input 
+            type="number" 
+            v-model.number="newShow.year" 
+            class="form-control"
+            min="1900"
+            :max="new Date().getFullYear()"
+          />
+        </div>
         
         <div class="form-group">
           <label>Rating:</label>

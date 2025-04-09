@@ -82,44 +82,4 @@ export default {
     }
   }
 }
-</script>
-
-<style scoped>
-.product-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin: 10px;
-  border-radius: 5px;
-}
-
-button {
-  padding: 5px 10px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
-}
-
-.out-of-stock {
-  color: red;
-  display: block;
-  margin: 5px 0;
-}
-
-.shipping-message {
-  color: blue;
-  font-size: 0.9em;
-  margin: 10px 0;
-}
-
-.quantity {
-  margin-top: 15px;
-  font-weight: bold;
-}
-</style> 
+</script> 

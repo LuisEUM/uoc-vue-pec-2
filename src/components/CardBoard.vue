@@ -19,12 +19,4 @@ export default {
     }
   }
 }
-</script>
-
-<style scoped>
-.card-board {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-</style> 
+</script> 

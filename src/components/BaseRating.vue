@@ -16,15 +16,4 @@ const props = defineProps({
 });
 
 const stars = computed(() => Math.round(props.rating));
-</script>
-
-<style scoped>
-.rating span {
-  color: #ccc;
-  cursor: default;
-  font-size: 1.2em;
-}
-.rating span.filled {
-  color: #f8d347;
-}
-</style> 
+</script> 

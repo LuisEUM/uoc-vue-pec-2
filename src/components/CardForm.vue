@@ -47,32 +47,4 @@ export default {
     }
   }
 }
-</script>
-
-<style scoped>
-.card-form {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-input, textarea {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
-button {
-  padding: 10px 15px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #218838;
-}
-</style> 
+</script> 
