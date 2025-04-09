@@ -27,7 +27,7 @@
 import AppHeader from './components/AppHeader.vue';
 import FilterBar from './components/FilterBar.vue';
 import CardBoard from './components/CardBoard.vue';
-import ShowForm from './components/ShowForm.vue';
+import ShowForm from './components/CardForm.vue';
 import showsData from './mockData/shows.json';
 
 export default {

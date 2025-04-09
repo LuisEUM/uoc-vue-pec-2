@@ -101,7 +101,7 @@
 
 <script>
 export default {
-  name: 'ShowForm',
+  name: 'CardForm',
   props: {
     showToEdit: {
       type: Object,
@@ -169,4 +169,8 @@ export default {
   },
   emits: ['saveShow', 'cancelEdit']
 }
-</script> 
+</script>
+
+<style scoped>
+@import "../styles/components/CardForm.css";
+</style> 
