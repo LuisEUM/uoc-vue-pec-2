@@ -1,6 +1,8 @@
 <template>
   <div class="show-card" :style="{ borderTopColor: show.color || '#42b983' }">
-    <button v-if="deletable" @click="$emit('deleteShow', show.id)" class="delete-btn">×</button>
+    <button v-if="deletable" @click="$emit('deleteShow', show.id)" class="delete-btn">
+      <img src="/src/assets/delete.svg" alt="Delete" class="delete-icon">
+    </button>
     <div class="show-content" @click="$emit('select', show)">
       <div class="show-image-container">
         <img :src="show.image" :alt="show.title" class="show-image">

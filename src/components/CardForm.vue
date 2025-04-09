@@ -3,7 +3,7 @@
     <div class="form-header">
       <h2>{{ showToEdit ? 'Edit Show' : 'Add New Show' }}</h2>
       <button class="close-btn" @click="$emit('cancelEdit')">
-        <img src="/arrow-right.svg" alt="Close" />
+        <img src="/src/assets/arrow-right.svg" alt="Close" />
       </button>
     </div>
     
