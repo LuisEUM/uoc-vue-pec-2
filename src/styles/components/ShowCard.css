@@ -1,12 +1,19 @@
 .show-card {
-  background-color: white;
+  background: white;
   border-radius: 8px;
+  overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  overflow: hidden;
-  height: 100%;
+  border-top: 5px solid;
+  transition: transform 0.2s ease-in-out;
   display: flex;
-  margin-bottom: 10px;
+  height: 100%;
+  min-height: 350px;
+  flex-direction: row;
+}
+
+.show-card:hover {
+  transform: translateY(-5px);
 }
 
 .delete-btn {
@@ -14,66 +21,73 @@
   top: 10px;
   right: 10px;
   background: rgba(0, 0, 0, 0.5);
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
   color: white;
-  z-index: 10;
+  border: none;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  width: 24px;
-  height: 24px;
+  font-size: 18px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 .show-content {
   display: flex;
-  height: 100%;
   width: 100%;
+  height: 100%;
+}
+
+.show-image-container {
+  width: 120px;
+  height: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  background-color: #000;
 }
 
 .show-image {
-  width: 100px;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-
-.show-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 .show-details {
   padding: 15px;
   flex-grow: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .show-details h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #333;
+  margin: 0 0 10px;
+  font-size: 1.2em;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2c3e50;
 }
 
 .description {
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: #555;
-  line-height: 1.3;
+  font-size: 0.9em;
+  color: #666;
+  margin-bottom: 10px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  line-height: 1.4;
 }
 
 .year {
-  color: #777;
-  font-size: 13px;
+  font-size: 0.85em;
+  color: #888;
   margin-bottom: 8px;
 }
 
@@ -81,38 +95,46 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .tag {
-  background-color: #f0f0f0;
-  padding: 2px 8px;
+  background: #f5f5f5;
+  padding: 3px 8px;
   border-radius: 12px;
-  font-size: 11px;
-  color: #555;
-}
-
-.notes {
-  font-size: 12px;
-  font-style: italic;
+  font-size: 0.8em;
   color: #666;
-  margin-bottom: 8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .rating {
-  display: flex;
+  margin-bottom: 10px;
   margin-top: auto;
+  display: flex;
 }
 
 .star {
   color: #ddd;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .star.filled {
   color: gold;
+}
+
+.notes {
+  font-size: 0.85em;
+  color: #666;
+  font-style: italic;
+  margin: 5px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .show-card {
+    min-height: 250px;
+  }
 }
