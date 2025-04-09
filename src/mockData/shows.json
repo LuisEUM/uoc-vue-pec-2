@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "title": "Breaking Bad",
+    "description": "A high school chemistry teacher turned methamphetamine producer",
+    "image": "/images/breaking_bad.jpg",
+    "rating": 4.5,
+    "tags": ["drama", "crime", "thriller"],
+    "notes": "An impressive series about the transformation of an ordinary man into a criminal.",
+    "color": "#2e6136",
+    "releaseDate": "2008"
+  },
+  {
+    "id": 2,
+    "title": "Stranger Things",
+    "description": "A group of kids uncovering supernatural mysteries in their town",
+    "image": "/images/stranger_things.jpg",
+    "rating": 4.7,
+    "tags": ["sci-fi", "horror", "mystery"],
+    "notes": "A perfect blend of 80s nostalgia and science fiction.",
+    "color": "#ff5733",
+    "releaseDate": "2016"
+  },
+  {
+    "id": 3,
+    "title": "The Walking Dead",
+    "description": "Survivors of a zombie apocalypse fight to stay alive",
+    "image": "/images/the_walking_dead.jpg",
+    "rating": 4.2,
+    "tags": ["horror", "drama", "action"],
+    "notes": "An intense series about survival in a post-apocalyptic world.",
+    "color": "#333333",
+    "releaseDate": "2010"
+  },
+  {
+    "id": 4,
+    "title": "Game of Thrones",
+    "description": "Noble families vie for control of the Iron Throne",
+    "image": "/images/game_of_thrones.jpg",
+    "rating": 4.8,
+    "tags": ["fantasy", "drama", "action"],
+    "notes": "An epic tale of power, betrayal, and war.",
+    "color": "#1a1a1a",
+    "releaseDate": "2011"
+  },
+  {
+    "id": 5,
+    "title": "American Horror Story",
+    "description": "An anthology series centering on different characters and locations, including a haunted house, an insane asylum, and a witch coven.",
+    "image": "/images/american_horror_story_murder_house.jpg",
+    "rating": 4.0,
+    "tags": ["horror", "drama", "thriller"],
+    "notes": "A chilling anthology series with a new story each season.",
+    "color": "#8b0000",
+    "releaseDate": "2011"
+  },
+  {
+    "id": 6,
+    "title": "Black Mirror",
+    "description": "An anthology series exploring a twisted high-tech world",
+    "image": "/images/black_mirror.jpg",
+    "rating": 4.6,
+    "tags": ["sci-fi", "drama", "thriller"],
+    "notes": "A dark reflection on technology and society.",
+    "color": "#000000",
+    "releaseDate": "2011"
+  },
+  {
+    "id": 7,
+    "title": "Dark",
+    "description": "A family saga with a supernatural twist, set in a German town",
+    "image": "/images/dark.jpg",
+    "rating": 4.8,
+    "tags": ["sci-fi", "drama", "mystery"],
+    "notes": "A complex time-travel narrative that spans generations.",
+    "color": "#1d3557",
+    "releaseDate": "2017"
+  },
+  {
+    "id": 8,
+    "title": "The Boys",
+    "description": "A group of vigilantes set out to take down corrupt superheroes",
+    "image": "/images/the_boys.jpg",
+    "rating": 4.7,
+    "tags": ["action", "comedy", "drama"],
+    "notes": "A dark take on superhero culture.",
+    "color": "#c1121f",
+    "releaseDate": "2019"
+  },
+  {
+    "id": 9,
+    "title": "The Crown",
+    "description": "A historical drama about the reign of Queen Elizabeth II",
+    "image": "/images/the_crown.jpg",
+    "rating": 4.7,
+    "tags": ["drama", "history", "biography"],
+    "notes": "A fascinating look at the British monarchy.",
+    "color": "#ffd700",
+    "releaseDate": "2016"
+  },
+  {
+    "id": 10,
+    "title": "The Mandalorian",
+    "description": "A lone bounty hunter makes his way through the outer reaches of the galaxy",
+    "image": "/images/the_mandalorian.jpg",
+    "rating": 4.8,
+    "tags": ["sci-fi", "action", "adventure"],
+    "notes": "A space western set in the Star Wars universe.",
+    "color": "#2a9d8f",
+    "releaseDate": "2019"
+  },
+  {
+    "id": 11,
+    "title": "The Witcher",
+    "description": "A monster hunter struggles to find his place in a world where people often prove more wicked than beasts",
+    "image": "/images/the_witcher.jpg",
+    "rating": 4.5,
+    "tags": ["fantasy", "action", "drama"],
+    "notes": "Based on the popular book series.",
+    "color": "#774936",
+    "releaseDate": "2019"
+  },
+  {
+    "id": 12,
+    "title": "Westworld",
+    "description": "A dark odyssey about the dawn of artificial consciousness",
+    "image": "/images/westworld.jpg",
+    "rating": 4.6,
+    "tags": ["sci-fi", "drama", "mystery"],
+    "notes": "A complex narrative about consciousness and free will.",
+    "color": "#003049",
+    "releaseDate": "2016"
+  }
+]
