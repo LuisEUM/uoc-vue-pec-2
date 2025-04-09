@@ -32,6 +32,8 @@
           min="0"
           max="5"
           step="0.5"
+          @input="updateRangeProgress"
+          ref="ratingSlider"
         />
         <span>{{ minRating }}</span>
       </div>
@@ -110,6 +112,39 @@ export default {
       set(value) {
         this.$emit('update:modelValue', { ...this.modelValue, sortOrder: value });
       }
+    }
+  },
+  methods: {
+    updateRangeProgress(event) {
+      const target = event.target;
+      const min = parseFloat(target.min);
+      const max = parseFloat(target.max);
+      const val = parseFloat(target.value);
+      const percentage = (val - min) * 100 / (max - min);
+      target.style.setProperty('--range-progress', `${percentage}%`);
+    }
+  },
+  mounted() {
+    if (this.$refs.ratingSlider) {
+      const slider = this.$refs.ratingSlider;
+      const min = parseFloat(slider.min);
+      const max = parseFloat(slider.max);
+      const val = parseFloat(slider.value);
+      const percentage = (val - min) * 100 / (max - min);
+      slider.style.setProperty('--range-progress', `${percentage}%`);
+    }
+  },
+  watch: {
+    'modelValue.minRating': function(newVal) {
+      this.$nextTick(() => {
+        if (this.$refs.ratingSlider) {
+          const slider = this.$refs.ratingSlider;
+          const min = parseFloat(slider.min);
+          const max = parseFloat(slider.max);
+          const percentage = (newVal - min) * 100 / (max - min);
+          slider.style.setProperty('--range-progress', `${percentage}%`);
+        }
+      });
     }
   }
 }
