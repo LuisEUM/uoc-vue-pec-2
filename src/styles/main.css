@@ -7,11 +7,7 @@
 /* Component Styles */
 @import "./components/AppHeader.css";
 @import "./components/BaseRating.css";
-@import "./components/CardBoard.css";
-@import "./components/CardForm.css";
-@import "./components/FilterBar.css";
 @import "./components/Pagination.css";
-@import "./components/ProductCard.css";
 @import "./components/ShowCard.css";
 @import "./components/ShowFilterBar.css";
 @import "./components/ShowForm.css";
