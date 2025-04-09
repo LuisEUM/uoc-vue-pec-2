@@ -1,9 +1,0 @@
-.rating span {
-  color: #ccc;
-  cursor: default;
-  font-size: 1.2em;
-}
-
-.rating span.filled {
-  color: #f8d347;
-}
