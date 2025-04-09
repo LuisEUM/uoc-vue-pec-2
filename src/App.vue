@@ -12,7 +12,7 @@
         :showList="filteredAndSortedShows" 
         @deleteShow="deleteShow" 
       />
-      <ShowForm
+      <CardForm
         v-if="isFormVisible"
         :show-to-edit="showBeingEdited"
         @saveShow="saveShow"
@@ -27,7 +27,7 @@
 import AppHeader from './components/AppHeader.vue';
 import FilterBar from './components/FilterBar.vue';
 import CardBoard from './components/CardBoard.vue';
-import ShowForm from './components/CardForm.vue';
+import CardForm from './components/CardForm.vue';
 import showsData from './mockData/shows.json';
 
 export default {
@@ -36,7 +36,7 @@ export default {
     AppHeader,
     FilterBar,
     CardBoard,
-    ShowForm
+    CardForm
   },
   data() {
     return {
