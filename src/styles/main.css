@@ -9,6 +9,6 @@
 @import "./components/BaseRating.css";
 @import "./components/Pagination.css";
 @import "./components/ShowCard.css";
-@import "./components/ShowFilterBar.css";
+@import "./components/FilterBar.css";
 @import "./components/ShowForm.css";
-@import "./components/ShowGrid.css";
+@import "./components/CardBoard.css";

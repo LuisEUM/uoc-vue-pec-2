@@ -29,17 +29,19 @@
   </div>
 </template>
 
-<script setup>
-defineProps({
-  currentPage: {
-    type: Number,
-    required: true
+<script>
+export default {
+  name: 'Pagination',
+  props: {
+    currentPage: {
+      type: Number,
+      required: true
+    },
+    totalPages: {
+      type: Number,
+      required: true
+    }
   },
-  totalPages: {
-    type: Number,
-    required: true
-  }
-});
-
-defineEmits(['update:currentPage']);
+  emits: ['update:currentPage']
+}
 </script> 

@@ -7,11 +7,14 @@
   </header>
 </template>
 
-<script setup>
-defineProps({
-  userName: {
-    type: String,
-    required: true
+<script>
+export default {
+  name: 'AppHeader',
+  props: {
+    userName: {
+      type: String,
+      required: true
+    }
   }
-});
+}
 </script> 

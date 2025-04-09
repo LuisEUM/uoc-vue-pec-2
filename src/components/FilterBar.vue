@@ -40,7 +40,7 @@
         <label>Sort by:</label>
         <select v-model="sortBy">
           <option value="title">Title</option>
-          <option value="year">Year</option>
+          <option value="releaseDate">Year</option>
           <option value="rating">Rating</option>
         </select>
       </div>
@@ -56,44 +56,61 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    required: true
+<script>
+export default {
+  name: 'FilterBar',
+  props: {
+    modelValue: {
+      type: Object,
+      required: true
+    },
+    tagOptions: {
+      type: Array,
+      required: true
+    }
   },
-  tagOptions: {
-    type: Array,
-    required: true
+  emits: ['update:modelValue', 'clearFilters', 'addShowRequest'],
+  computed: {
+    searchTerm: {
+      get() {
+        return this.modelValue.searchTerm;
+      },
+      set(value) {
+        this.$emit('update:modelValue', { ...this.modelValue, searchTerm: value });
+      }
+    },
+    selectedTag: {
+      get() {
+        return this.modelValue.tag;
+      },
+      set(value) {
+        this.$emit('update:modelValue', { ...this.modelValue, tag: value });
+      }
+    },
+    minRating: {
+      get() {
+        return this.modelValue.minRating;
+      },
+      set(value) {
+        this.$emit('update:modelValue', { ...this.modelValue, minRating: value });
+      }
+    },
+    sortBy: {
+      get() {
+        return this.modelValue.sortBy;
+      },
+      set(value) {
+        this.$emit('update:modelValue', { ...this.modelValue, sortBy: value });
+      }
+    },
+    sortOrder: {
+      get() {
+        return this.modelValue.sortOrder;
+      },
+      set(value) {
+        this.$emit('update:modelValue', { ...this.modelValue, sortOrder: value });
+      }
+    }
   }
-});
-
-const emit = defineEmits(['update:modelValue', 'clearFilters', 'addShowRequest']);
-
-const searchTerm = computed({
-  get: () => props.modelValue.searchTerm,
-  set: (value) => emit('update:modelValue', { ...props.modelValue, searchTerm: value })
-});
-
-const selectedTag = computed({
-  get: () => props.modelValue.tag,
-  set: (value) => emit('update:modelValue', { ...props.modelValue, tag: value })
-});
-
-const minRating = computed({
-  get: () => props.modelValue.minRating,
-  set: (value) => emit('update:modelValue', { ...props.modelValue, minRating: value })
-});
-
-const sortBy = computed({
-  get: () => props.modelValue.sortBy,
-  set: (value) => emit('update:modelValue', { ...props.modelValue, sortBy: value })
-});
-
-const sortOrder = computed({
-  get: () => props.modelValue.sortOrder,
-  set: (value) => emit('update:modelValue', { ...props.modelValue, sortOrder: value })
-});
+}
 </script> 

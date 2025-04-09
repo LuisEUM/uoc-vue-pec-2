@@ -99,66 +99,74 @@
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, watch } from 'vue';
-
-const props = defineProps({
-  showToEdit: {
-    type: Object,
-    default: null
-  }
-});
-
-const emit = defineEmits(['saveShow', 'cancelEdit']);
-
-const formData = ref({
-  title: '',
-  description: '',
-  image: '',
-  year: new Date().getFullYear(),
-  rating: 3,
-  notes: '',
-  color: '#000000'
-});
-
-const tagsInput = ref('');
-
-const initializeForm = () => {
-  if (props.showToEdit) {
-    formData.value = { ...props.showToEdit };
-    tagsInput.value = props.showToEdit.tags?.join(', ') || '';
-  } else {
-    formData.value = {
-      title: '',
-      description: '',
-      image: '',
-      year: new Date().getFullYear(),
-      rating: 3,
-      notes: '',
-      color: '#000000'
+<script>
+export default {
+  name: 'ShowForm',
+  props: {
+    showToEdit: {
+      type: Object,
+      default: null
+    }
+  },
+  data() {
+    return {
+      formData: {
+        title: '',
+        description: '',
+        image: '',
+        year: new Date().getFullYear(),
+        rating: 3,
+        notes: '',
+        color: '#000000'
+      },
+      tagsInput: ''
     };
-    tagsInput.value = '';
-  }
-};
-
-onMounted(initializeForm);
-
-watch(() => props.showToEdit, initializeForm);
-
-const handleSave = () => {
-  if (!formData.value.title || !formData.value.description) {
-    alert('Please fill in all required fields');
-    return;
-  }
-  
-  const tags = tagsInput.value
-    .split(',')
-    .map(tag => tag.trim())
-    .filter(tag => tag.length > 0);
-  
-  emit('saveShow', {
-    ...formData.value,
-    tags
-  });
-};
+  },
+  methods: {
+    initializeForm() {
+      if (this.showToEdit) {
+        this.formData = { ...this.showToEdit };
+        this.tagsInput = this.showToEdit.tags?.join(', ') || '';
+      } else {
+        this.formData = {
+          title: '',
+          description: '',
+          image: '',
+          year: new Date().getFullYear(),
+          rating: 3,
+          notes: '',
+          color: '#000000'
+        };
+        this.tagsInput = '';
+      }
+    },
+    handleSave() {
+      if (!this.formData.title || !this.formData.description) {
+        alert('Please fill in all required fields');
+        return;
+      }
+      
+      const tags = this.tagsInput
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag.length > 0);
+      
+      this.$emit('saveShow', {
+        ...this.formData,
+        tags
+      });
+    }
+  },
+  mounted() {
+    this.initializeForm();
+  },
+  watch: {
+    showToEdit: {
+      handler() {
+        this.initializeForm();
+      }
+    }
+  },
+  emits: ['saveShow', 'cancelEdit']
+}
 </script> 

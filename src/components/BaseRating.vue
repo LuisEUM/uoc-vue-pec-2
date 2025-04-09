@@ -4,16 +4,20 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-
-const props = defineProps({
-  rating: {
-    type: Number,
-    required: true,
-    validator: (value) => value >= 0 && value <= 5,
+<script>
+export default {
+  name: 'BaseRating',
+  props: {
+    rating: {
+      type: Number,
+      required: true,
+      validator: (value) => value >= 0 && value <= 5,
+    }
+  },
+  computed: {
+    stars() {
+      return Math.round(this.rating);
+    }
   }
-});
-
-const stars = computed(() => Math.round(props.rating));
+}
 </script> 

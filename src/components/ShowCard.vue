@@ -1,6 +1,6 @@
 <template>
   <div class="show-card" :style="{ borderLeftColor: show.color }">
-    <button class="delete-btn" @click="$emit('delete', show.id)">×</button>
+    <button class="delete-btn" @click="$emit('deleteShow', show.id)">×</button>
     
     <div class="show-content">
       <div class="show-image">
@@ -10,7 +10,7 @@
       <div class="show-details">
         <h3>{{ show.title }}</h3>
         <p class="description">{{ show.description }}</p>
-        <p class="year" v-if="show.year">{{ show.year }}</p>
+        <p class="year" v-if="show.releaseDate">{{ show.releaseDate }}</p>
         
         <div class="tags" v-if="show.tags && show.tags.length">
           <span 
@@ -28,7 +28,7 @@
           <span 
             v-for="star in 5" 
             :key="star" 
-            :class="['star', { filled: star <= Math.round(show.rating) }]"
+            :class="['star', { filled: star <= Math.floor(show.rating) }]"
           >
             ★
           </span>
@@ -44,8 +44,22 @@ export default {
   props: {
     show: {
       type: Object,
-      required: true
+      required: true,
+      validator: function(obj) {
+        return [
+          'id', 
+          'title', 
+          'description', 
+          'image', 
+          'rating', 
+          'tags', 
+          'notes', 
+          'color', 
+          'releaseDate'
+        ].every(prop => prop in obj);
+      }
     }
-  }
+  },
+  emits: ['deleteShow']
 };
 </script> 
