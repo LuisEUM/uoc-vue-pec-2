@@ -1,13 +1,7 @@
 /* Global Styles */
 @import "./globalStyles.css";
 
-/* App Layout */
-@import "./components/App.css";
-
-/* Component Styles */
-@import "./components/AppHeader.css";
-@import "./components/Pagination.css";
-@import "./components/ShowCard.css";
-@import "./components/FilterBar.css";
-@import "./components/CardBoard.css";
-@import "./components/CardForm.css";
+/* 
+ * Los estilos de componentes han sido migrados a sus respectivos archivos Vue 
+ * usando la directiva <style scoped> para un mejor encapsulamiento
+ */
