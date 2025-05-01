@@ -61,18 +61,18 @@ export default {
       }
     },
 
-    // Función refactorizada para separar responsabilidades
-    // 1. Verifica si hay envío seleccionado
+    // He refactorizado esta función separando sus responsabilidades en métodos más pequeños:
+    // 1. Aquí verifico si hay un envío seleccionado
     hasSelectedShipping() {
       return Object.keys(this.selectedShipping).length > 0;
     },
 
-    // 2. Obtiene el número mínimo de items para envío gratuito
+    // 2. Con este método obtengo el mínimo de items para envío gratuito
     getFreeShippingItemThreshold() {
       return this.selectedShipping.freeShippingItems || 0;
     },
 
-    // 3. Calcula los items restantes para envío gratuito
+    // 3. Aquí calculo cuántos items faltan para tener envío gratis
     getRemainingItemsForFreeShipping() {
       if (!this.hasSelectedShipping()) return 0;
 
@@ -82,7 +82,7 @@ export default {
       return Math.max(0, remaining);
     },
 
-    // 4. Determina si se debe mostrar el mensaje de envío gratuito
+    // 4. Este método decide si debo mostrar el mensaje de envío gratuito
     checkFreeShipping() {
       return (
         this.hasSelectedShipping() &&

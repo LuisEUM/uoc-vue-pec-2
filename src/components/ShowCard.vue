@@ -37,20 +37,24 @@
 export default {
   name: "ShowCard",
   props: {
+    // Recibo el objeto completo de la serie para mostrar su información
     show: {
       type: Object,
       required: true,
     },
+    // Me indica si debo mostrar el botón de eliminar
     deletable: {
       type: Boolean,
       default: false,
     },
   },
+  // Emito eventos cuando el usuario quiere eliminar o seleccionar una serie
   emits: ["deleteShow", "select"],
 };
 </script>
 
 <style scoped>
+/* Diseño la tarjeta con un borde superior personalizado para cada serie */
 .show-card {
   background: white;
   border-radius: 8px;
@@ -65,10 +69,12 @@ export default {
   flex-direction: row;
 }
 
+/* Agrego un pequeño efecto de elevación al pasar el cursor */
 .show-card:hover {
   transform: translateY(-5px);
 }
 
+/* Posiciono el botón de eliminar en la esquina superior derecha */
 .delete-btn {
   position: absolute;
   top: 10px;
@@ -85,17 +91,20 @@ export default {
   padding: 0;
 }
 
+/* Ajusto el tamaño del icono de eliminar */
 .delete-icon {
   width: 44px;
   height: 44px;
 }
 
+/* Organizo el contenido en una disposición horizontal */
 .show-content {
   display: flex;
   width: 100%;
   height: 100%;
 }
 
+/* Fijo el ancho del contenedor de la imagen */
 .show-image-container {
   width: 120px;
   height: 100%;
@@ -105,6 +114,7 @@ export default {
   background-color: #000;
 }
 
+/* Me aseguro de que la imagen cubra bien el espacio asignado */
 .show-image {
   width: 100%;
   height: 100%;
@@ -112,6 +122,7 @@ export default {
   object-position: center;
 }
 
+/* Organizo los detalles en una columna flexible */
 .show-details {
   padding: 15px;
   flex-grow: 1;
@@ -120,6 +131,7 @@ export default {
   flex-direction: column;
 }
 
+/* Estilizo el título para que destaque */
 .show-details h3 {
   margin: 0 0 10px;
   font-size: 1.2em;
@@ -130,6 +142,7 @@ export default {
   color: #2c3e50;
 }
 
+/* Limito la descripción a dos líneas con puntos suspensivos */
 .description {
   font-size: 0.9em;
   color: #666;
@@ -142,12 +155,14 @@ export default {
   line-height: 1.4;
 }
 
+/* Estilo sutil para el año de lanzamiento */
 .year {
   font-size: 0.85em;
   color: #888;
   margin-bottom: 8px;
 }
 
+/* Organizo las etiquetas en un contenedor flexible */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -155,6 +170,7 @@ export default {
   margin-bottom: 10px;
 }
 
+/* Diseño cada etiqueta como una pequeña píldora */
 .tag {
   background: #f5f5f5;
   padding: 3px 8px;
@@ -163,21 +179,25 @@ export default {
   color: #666;
 }
 
+/* Empujo las estrellas hacia abajo con margin-top: auto */
 .rating {
   margin-bottom: 10px;
   margin-top: auto;
   display: flex;
 }
 
+/* Estrellas grises por defecto */
 .star {
   color: #ddd;
   font-size: 18px;
 }
 
+/* Estrellas doradas para la valoración */
 .star.filled {
   color: gold;
 }
 
+/* Estilizo las notas como texto más pequeño en cursiva */
 .notes {
   font-size: 0.85em;
   color: #666;
@@ -191,6 +211,7 @@ export default {
   line-height: 1.4;
 }
 
+/* Ajusto la altura mínima en dispositivos móviles */
 @media (max-width: 768px) {
   .show-card {
     min-height: 250px;

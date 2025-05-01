@@ -169,3 +169,8 @@ select {
   color: red;
   font-size: 0.8rem;
 }
+
+/* 
+ * He migrado todos los estilos de componentes a sus respectivos archivos Vue 
+ * usando <style scoped> para un mejor encapsulamiento y mantenimiento
+ */

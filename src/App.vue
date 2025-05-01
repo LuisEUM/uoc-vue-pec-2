@@ -80,7 +80,8 @@ export default {
         result = result.filter(
           (show) =>
             show.title.toLowerCase().includes(term) ||
-            show.description.toLowerCase().includes(term)
+            show.description.toLowerCase().includes(term) ||
+            (show.tags && show.tags.some(tag => tag.toLowerCase().includes(term)))
         );
       }
 
@@ -114,10 +115,10 @@ export default {
   },
   methods: {
     fetchShows() {
-      // Usar datos desde el archivo JSON
+      // Aquí cargo los datos desde mi archivo JSON
       this.allShows = showsData.map((show) => ({
         ...show,
-        // Asegurarse de que todas las propiedades necesarias estén presentes
+        // Me aseguro de que todas las propiedades necesarias estén presentes
         tags: show.tags
           ? show.tags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
           : [],

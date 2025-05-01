@@ -1,7 +1,0 @@
-/* Global Styles */
-@import "./globalStyles.css";
-
-/* 
- * Los estilos de componentes han sido migrados a sus respectivos archivos Vue 
- * usando la directiva <style scoped> para un mejor encapsulamiento
- */

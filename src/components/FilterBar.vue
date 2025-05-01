@@ -272,14 +272,14 @@ export default {
   padding: 0;
 }
 
-/* Remove focus styles */
+/* Quito los estilos de foco para un diseño más limpio */
 .filter-group input[type="range"]:focus {
   outline: none;
   box-shadow: none;
   border: none;
 }
 
-/* Vendor-specific styling for range input */
+/* Estos son mis estilos personalizados para el control deslizante */
 .filter-group input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
@@ -299,7 +299,7 @@ export default {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  margin-top: -5px; /* Adjust to center the thumb on the track */
+  margin-top: -5px; /* Ajusto el pulgar para centrarlo en la pista */
   cursor: pointer;
 }
 

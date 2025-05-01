@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      itemsPerPage: 6, // 2 filas x 3 columnas
+      itemsPerPage: 6, // Uso 6 items para mostrar en una cuadrícula de 2x3
     };
   },
   computed: {

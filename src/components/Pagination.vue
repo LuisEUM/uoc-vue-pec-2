@@ -33,20 +33,24 @@
 export default {
   name: 'Pagination',
   props: {
+    // Necesito saber la página actual para destacarla y manejar los botones prev/next
     currentPage: {
       type: Number,
       required: true
     },
+    // Utilizo el número total de páginas para generar los botones numéricos
     totalPages: {
       type: Number,
       required: true
     }
   },
+  // Emito el evento cuando el usuario cambia de página
   emits: ['update:currentPage']
 }
 </script>
 
 <style scoped>
+/* Centro la paginación y distribuyo los elementos uniformemente */
 .pagination {
   display: flex;
   justify-content: center;
@@ -57,11 +61,13 @@ export default {
   min-width: 0;
 }
 
+/* Agrupo los números de página con un espaciado consistente */
 .page-numbers {
   display: flex;
   gap: 10px;
 }
 
+/* Estilo base para los botones de navegación y números de página */
 .page-btn,
 .page-number {
   padding: 8px 16px;
@@ -72,12 +78,14 @@ export default {
   transition: all 0.2s;
 }
 
+/* Deshabilito visualmente los botones cuando no son utilizables */
 .page-btn:disabled {
   background: #eee;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
+/* Mantengo un tamaño consistente para los botones de número */
 .page-number {
   min-width: 40px;
   height: 40px;
@@ -86,11 +94,13 @@ export default {
   justify-content: center;
 }
 
+/* Destaco la página actual con color primario */
 .page-number.active {
   background: #4662f8;
   color: white;
 }
 
+/* Añado efecto hover para mejorar la interactividad */
 .page-btn:hover:not(:disabled),
 .page-number:hover:not(.active) {
   background: #f0f0f0;

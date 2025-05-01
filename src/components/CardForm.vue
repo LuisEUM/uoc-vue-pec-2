@@ -291,7 +291,7 @@ input[type="color"]::-webkit-color-swatch {
   border-radius: 2px;
 }
 
-/* Firefox */
+/* Soporte para Firefox */
 input[type="color"]::-moz-color-swatch {
   border: none;
   border-radius: 2px;
@@ -304,7 +304,7 @@ input[type="color"] {
 }
 
 .color-preview {
-  display: none; /* Ocultamos el antiguo preview */
+  display: none; /* Ya no necesito el antiguo preview, lo oculto */
 }
 
 .form-footer {
