@@ -154,5 +154,58 @@ export default {
 </script>
 
 <style>
-/* Estilos conservados para la aplicación principal */
+#app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow-y: auto;
+  padding: 0 20px;
+}
+
+.content-area {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  gap: 20px;
+  min-height: 75dvh;
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+main {
+  display: flex;
+  flex-grow: 1;
+  gap: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar-form {
+  width: 400px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
+  max-height: 75dvh;
+  overflow-y: auto;
+  z-index: 5;
+}
+
+@media (max-width: 1200px) {
+  .content-area {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .sidebar-form {
+    width: 100%;
+    position: static;
+    max-height: none;
+  }
+}
 </style>

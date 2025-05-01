@@ -65,7 +65,8 @@ export default {
   transition: transform 0.2s ease-in-out;
   display: flex;
   height: 100%;
-  min-height: 350px;
+  min-height: 280px;
+  max-height: 350px;
   flex-direction: row;
 }
 

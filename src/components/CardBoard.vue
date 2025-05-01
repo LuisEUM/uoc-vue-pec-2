@@ -63,17 +63,18 @@ export default {
   min-height: 80dvh;
   flex: 1;
   width: 100%;
+  position: relative;
+  padding-bottom: 80px;
 }
 
 .card-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
   gap: 20px;
   padding: 20px;
-  flex-grow: 1;
-  min-height: 75dvh;
   width: 100%;
+  padding-bottom: 60px;
 }
 
 .card-board:empty {
@@ -88,14 +89,14 @@ export default {
 @media (max-width: 1200px) {
   .card-board {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(3, auto);
   }
 }
 
 @media (max-width: 768px) {
   .card-board {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, 1fr);
+    grid-template-rows: repeat(6, auto);
   }
 }
 </style>
