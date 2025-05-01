@@ -1,18 +1,6 @@
 <template>
   <div id="app-layout">
     <AppHeader user-name="Luis Eduardo Urdaneta Martucci" />
-
-    <!-- Sección de prueba para ProductCard -->
-    <div class="product-test-section" v-if="showProductTest">
-      <h2>Product Card Test</h2>
-      <div class="product-container">
-        <ProductCard title="Test Product" :price="99.99" :inStock="true" />
-      </div>
-      <button @click="showProductTest = false" class="close-test-btn">
-        Cerrar prueba
-      </button>
-    </div>
-
     <FilterBar
       v-model="filters"
       @addShowRequest="openAddForm"
@@ -37,7 +25,6 @@ import AppHeader from "./components/AppHeader.vue";
 import FilterBar from "./components/FilterBar.vue";
 import CardBoard from "./components/CardBoard.vue";
 import CardForm from "./components/CardForm.vue";
-import ProductCard from "./components/ProductCard.vue";
 import showsData from "./mockData/shows.json";
 
 export default {
@@ -47,7 +34,6 @@ export default {
     FilterBar,
     CardBoard,
     CardForm,
-    ProductCard,
   },
   data() {
     return {
@@ -61,7 +47,6 @@ export default {
       },
       isFormVisible: false,
       showBeingEdited: null,
-      showProductTest: true,
     };
   },
   computed: {
@@ -169,25 +154,5 @@ export default {
 </script>
 
 <style>
-.product-test-section {
-  background-color: #f8f9fa;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-}
-
-.product-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
-
-.close-test-btn {
-  background-color: #6c757d;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+/* Estilos conservados para la aplicación principal */
 </style>
