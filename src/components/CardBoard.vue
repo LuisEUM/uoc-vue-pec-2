@@ -14,45 +14,43 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, watch } from 'vue';
 import Pagination from "./Pagination.vue";
 import ShowCard from "./ShowCard.vue";
 
-export default {
-  name: "CardBoard",
-  components: {
-    Pagination,
-    ShowCard,
+// Define props and emits
+const props = defineProps({
+  showList: {
+    type: Array,
+    required: true,
   },
-  props: {
-    showList: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      currentPage: 1,
-      itemsPerPage: 6, // Uso 6 items para mostrar en una cuadrícula de 2x3
-    };
-  },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.showList.length / this.itemsPerPage);
-    },
-    paginatedShows() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.showList.slice(start, end);
-    },
-  },
-  watch: {
-    "showList.length": function () {
-      this.currentPage = 1;
-    },
-  },
-  emits: ["deleteShow"],
-};
+});
+
+const emit = defineEmits(['deleteShow']);
+
+// Reactive state
+const currentPage = ref(1);
+const itemsPerPage = 6; // Use 6 items to display in a 2x3 grid
+
+// Computed properties
+const totalPages = computed(() => {
+  return Math.ceil(props.showList.length / itemsPerPage);
+});
+
+const paginatedShows = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return props.showList.slice(start, end);
+});
+
+// Watchers
+watch(
+  () => props.showList.length,
+  () => {
+    currentPage.value = 1;
+  }
+);
 </script>
 
 <style scoped>

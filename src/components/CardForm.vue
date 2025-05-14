@@ -14,8 +14,10 @@
           type="text" 
           v-model="formData.title" 
           class="form-control"
+          :class="{ 'error-input': errors.title }"
           required
         />
+        <div v-if="errors.title" class="error-message">{{ errors.title }}</div>
       </div>
       
       <div class="form-group">
@@ -23,9 +25,11 @@
         <textarea 
           v-model="formData.description" 
           class="form-control"
+          :class="{ 'error-input': errors.description }"
           rows="3"
           required
         ></textarea>
+        <div v-if="errors.description" class="error-message">{{ errors.description }}</div>
       </div>
       
       <div class="form-group">
@@ -34,7 +38,9 @@
           type="url" 
           v-model="formData.image" 
           class="form-control"
+          :class="{ 'error-input': errors.image }"
         />
+        <div v-if="errors.image" class="error-message">{{ errors.image }}</div>
       </div>
       
       <div class="form-group">
@@ -43,9 +49,11 @@
           type="number" 
           v-model.number="formData.year" 
           class="form-control"
+          :class="{ 'error-input': errors.year }"
           :min="1900"
           :max="new Date().getFullYear()"
         />
+        <div v-if="errors.year" class="error-message">{{ errors.year }}</div>
       </div>
       
       <div class="form-group">
@@ -54,10 +62,12 @@
           type="number" 
           v-model.number="formData.rating" 
           class="form-control"
+          :class="{ 'error-input': errors.rating }"
           min="0"
           max="5"
           step="0.1"
         />
+        <div v-if="errors.rating" class="error-message">{{ errors.rating }}</div>
       </div>
       
       <div class="form-group">
@@ -99,76 +109,143 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'CardForm',
-  props: {
-    showToEdit: {
-      type: Object,
-      default: null
-    }
-  },
-  data() {
-    return {
-      formData: {
-        title: '',
-        description: '',
-        image: '',
-        year: new Date().getFullYear(),
-        rating: 3,
-        notes: '',
-        color: '#000000'
-      },
-      tagsInput: ''
+<script setup>
+import { ref, watch, onMounted } from 'vue';
+import { useToast } from '../composables/useToast';
+
+// Get toast functions
+const toast = useToast();
+
+// Define props and emits
+const props = defineProps({
+  showToEdit: {
+    type: Object,
+    default: null
+  }
+});
+
+const emit = defineEmits(['saveShow', 'cancelEdit']);
+
+// Reactive state
+const formData = ref({
+  title: '',
+  description: '',
+  image: '',
+  year: new Date().getFullYear(),
+  rating: 3,
+  notes: '',
+  color: '#000000'
+});
+
+const tagsInput = ref('');
+const errors = ref({});
+
+// Methods
+const initializeForm = () => {
+  errors.value = {};
+  
+  if (props.showToEdit) {
+    formData.value = { ...props.showToEdit };
+    tagsInput.value = props.showToEdit.tags?.join(', ') || '';
+  } else {
+    formData.value = {
+      title: '',
+      description: '',
+      image: '',
+      year: new Date().getFullYear(),
+      rating: 3,
+      notes: '',
+      color: '#000000'
     };
-  },
-  methods: {
-    initializeForm() {
-      if (this.showToEdit) {
-        this.formData = { ...this.showToEdit };
-        this.tagsInput = this.showToEdit.tags?.join(', ') || '';
-      } else {
-        this.formData = {
-          title: '',
-          description: '',
-          image: '',
-          year: new Date().getFullYear(),
-          rating: 3,
-          notes: '',
-          color: '#000000'
-        };
-        this.tagsInput = '';
-      }
-    },
-    handleSave() {
-      if (!this.formData.title || !this.formData.description) {
-        alert('Please fill in all required fields');
-        return;
-      }
-      
-      const tags = this.tagsInput
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
-      
-      this.$emit('saveShow', {
-        ...this.formData,
-        tags
-      });
+    tagsInput.value = '';
+  }
+};
+
+const validateForm = () => {
+  const newErrors = {};
+  
+  if (!formData.value.title.trim()) {
+    newErrors.title = 'Title is required';
+  }
+  
+  if (!formData.value.description.trim()) {
+    newErrors.description = 'Description is required';
+  }
+  
+  // Image is required by the API
+  if (!formData.value.image) {
+    newErrors.image = 'Image URL is required';
+  } else if (!isValidURL(formData.value.image)) {
+    newErrors.image = 'Please enter a valid URL';
+  }
+  
+  if (formData.value.year) {
+    const year = Number(formData.value.year);
+    const currentYear = new Date().getFullYear();
+    if (isNaN(year) || year < 1900 || year > currentYear) {
+      newErrors.year = `Year must be between 1900 and ${currentYear}`;
     }
-  },
-  mounted() {
-    this.initializeForm();
-  },
-  watch: {
-    showToEdit: {
-      handler() {
-        this.initializeForm();
-      }
-    }
-  },
-  emits: ['saveShow', 'cancelEdit']
-}
+  }
+  
+  if (formData.value.rating < 0 || formData.value.rating > 5) {
+    newErrors.rating = 'Rating must be between 0 and 5';
+  }
+  
+  errors.value = newErrors;
+  return Object.keys(newErrors).length === 0;
+};
+
+const isValidURL = (string) => {
+  try {
+    new URL(string);
+    return true;
+  } catch (_) {
+    return false;
+  }
+};
+
+const handleSave = () => {
+  if (!validateForm()) {
+    toast.showError('Validation Error', 'Please correct the errors in the form');
+    return;
+  }
+  
+  const tags = tagsInput.value
+    .split(',')
+    .map(tag => tag.trim())
+    .filter(tag => tag.length > 0);
+  
+  try {
+    // Convert year to releaseDate format for the API
+    const showData = {
+      ...formData.value,
+      tags: tags.length > 0 ? tags : ['uncategorized'], // Ensure we have at least one tag
+      // Format the year as a date string the API expects
+      releaseDate: formData.value.year ? `${formData.value.year}-01-01` : new Date().toISOString().split('T')[0]
+    };
+    
+    // Log what we're sending to the API for debugging
+    console.log('Sending to API:', showData);
+    
+    emit('saveShow', showData);
+  } catch (error) {
+    toast.showError('Form Error', 'An error occurred while saving the show');
+    console.error('Error in handleSave:', error);
+  }
+};
+
+// Watchers
+watch(
+  () => props.showToEdit,
+  () => {
+    initializeForm();
+  }
+);
+
+// Lifecycle hooks
+onMounted(() => {
+  initializeForm();
+});
 </script>
 
 <style scoped>
@@ -247,6 +324,16 @@ export default {
   font-size: 14px;
   background-color: white;
   color: #333;
+}
+
+.error-input {
+  border: 2px solid #f56c6c;
+}
+
+.error-message {
+  color: #f56c6c;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 textarea.form-control {

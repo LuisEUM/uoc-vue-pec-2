@@ -7,21 +7,19 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: "AppHeader",
-  props: {
-    // Recibo el nombre del usuario para mostrarlo en el encabezado
-    userName: {
-      type: String,
-      required: true,
-    },
+<script setup>
+// Define props
+defineProps({
+  // Receive username to display in the header
+  userName: {
+    type: String,
+    required: true,
   },
-};
+});
 </script>
 
 <style scoped>
-/* Uso colores transparentes para el encabezado para mantener un diseño limpio */
+/* Use transparent colors for the header to maintain a clean design */
 .app-header {
   background-color: transparent;
   color: #979797;
@@ -29,20 +27,20 @@ export default {
   margin-bottom: 20px;
 }
 
-/* Organizo el logo y el título en línea con flex */
+/* Organize logo and title inline with flex */
 .logo {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* Mantengo el logo en un tamaño adecuado */
+/* Keep logo at an appropriate size */
 .logo-img {
   height: 60px;
   width: auto;
 }
 
-/* Doy estilo al título para que destaque pero sin ser demasiado invasivo */
+/* Style the title to stand out without being too invasive */
 h1 {
   margin: 0;
   font-size: 32px;

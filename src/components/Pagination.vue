@@ -29,87 +29,86 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Pagination',
-  props: {
-    // Necesito saber la página actual para destacarla y manejar los botones prev/next
-    currentPage: {
-      type: Number,
-      required: true
-    },
-    // Utilizo el número total de páginas para generar los botones numéricos
-    totalPages: {
-      type: Number,
-      required: true
-    }
+<script setup>
+// Define props and emits
+const props = defineProps({
+  // Need to know the current page to highlight it and handle prev/next buttons
+  currentPage: {
+    type: Number,
+    required: true
   },
-  // Emito el evento cuando el usuario cambia de página
-  emits: ['update:currentPage']
-}
+  // Use total number of pages to generate numeric buttons
+  totalPages: {
+    type: Number,
+    required: true
+  }
+});
+
+// Emit event when user changes page
+defineEmits(['update:currentPage']);
 </script>
 
 <style scoped>
-/* Centro la paginación y distribuyo los elementos uniformemente */
+/* Center pagination and distribute elements evenly */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  position: absolute; /* Cambio a posicionamiento absoluto */
-  bottom: 0; /* Lo anclo a la parte inferior del contenedor */
+  position: absolute; /* Change to absolute positioning */
+  bottom: 0; /* Anchor to the bottom of the container */
   left: 0;
   right: 0;
-  margin: 0; /* Elimino márgenes */
+  margin: 0; /* Remove margins */
   padding: 30px 0;
-  z-index: 10; /* Mantengo z-index alto para asegurar que esté por encima del grid */
-  background: linear-gradient(to top, rgba(233, 236, 239, 1) 60%, rgba(233, 236, 239, 0)); /* Añado gradiente para mejor visibilidad */
+  z-index: 10; /* Keep high z-index to ensure it's above the grid */
+  background: linear-gradient(to top, rgba(233, 236, 239, 1) 60%, rgba(233, 236, 239, 0)); /* Add gradient for better visibility */
 }
 
-/* Agrupo los números de página con un espaciado consistente */
+/* Group page numbers with consistent spacing */
 .page-numbers {
   display: flex;
   gap: 10px;
 }
 
-/* Estilo base para los botones de navegación y números de página */
+/* Base style for navigation buttons and page numbers */
 .page-btn,
 .page-number {
   padding: 10px 18px;
   border: none;
-  border-radius: 8px; /* Aumento el border-radius para mejor apariencia */
+  border-radius: 8px; /* Increase border-radius for better appearance */
   background: white;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Aumento la sombra para mejor visibilidad */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow for better visibility */
   position: relative;
-  z-index: 11; /* Incremento el z-index para asegurar que esté por encima del fondo de la paginación */
+  z-index: 11; /* Increase z-index to ensure it's above the pagination background */
 }
 
-/* Deshabilito visualmente los botones cuando no son utilizables */
+/* Visually disable buttons when not usable */
 .page-btn:disabled {
   background: #eee;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
-/* Mantengo un tamaño consistente para los botones de número */
+/* Keep consistent size for number buttons */
 .page-number {
-  min-width: 44px; /* Aumento ligeramente el tamaño */
-  height: 44px; /* Aumento ligeramente el tamaño */
+  min-width: 44px; /* Slightly increase size */
+  height: 44px; /* Slightly increase size */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500; /* Añado un poco de peso a la fuente */
+  font-weight: 500; /* Add some weight to the font */
 }
 
-/* Destaco la página actual con color primario */
+/* Highlight current page with primary color */
 .page-number.active {
   background: #4662f8;
   color: white;
 }
 
-/* Añado efecto hover para mejorar la interactividad */
+/* Add hover effect to improve interactivity */
 .page-btn:hover:not(:disabled),
 .page-number:hover:not(.active) {
   background: #f0f0f0;

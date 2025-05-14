@@ -70,55 +70,63 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "FilterBar",
-  props: {
-    modelValue: {
-      type: Object,
-      required: true,
-    },
-    tagOptions: {
-      type: Array,
-      required: true,
-    },
-  },
-  emits: ["update:modelValue", "clearFilters", "addShowRequest"],
-  methods: {
-    updateFilter(key, value) {
-      this.$emit("update:modelValue", {
-        ...this.modelValue,
-        [key]: value,
-      });
-    },
-    updateRating(event) {
-      // Update the rating value
-      const value = parseFloat(event.target.value);
-      this.updateFilter("minRating", value);
+<script setup>
+import { onMounted, ref } from 'vue';
 
-      // Update the visual progress of the slider
-      this.updateRangeProgress(event);
-    },
-    updateRangeProgress(event) {
-      const target = event.target;
-      const min = parseFloat(target.min);
-      const max = parseFloat(target.max);
-      const val = parseFloat(target.value);
-      const percentage = ((val - min) * 100) / (max - min);
-      target.style.setProperty("--range-progress", `${percentage}%`);
-    },
+// Define props and emits
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true,
   },
-  mounted() {
-    if (this.$refs.ratingSlider) {
-      const slider = this.$refs.ratingSlider;
-      const min = parseFloat(slider.min);
-      const max = parseFloat(slider.max);
-      const val = parseFloat(this.modelValue.minRating);
-      const percentage = ((val - min) * 100) / (max - min);
-      slider.style.setProperty("--range-progress", `${percentage}%`);
-    }
+  tagOptions: {
+    type: Array,
+    required: true,
   },
+});
+
+const emit = defineEmits(['update:modelValue', 'clearFilters', 'addShowRequest']);
+
+// Refs
+const ratingSlider = ref(null);
+
+// Methods
+const updateFilter = (key, value) => {
+  emit('update:modelValue', {
+    ...props.modelValue,
+    [key]: value,
+  });
 };
+
+const updateRating = (event) => {
+  // Update the rating value
+  const value = parseFloat(event.target.value);
+  updateFilter('minRating', value);
+
+  // Update the visual progress of the slider
+  updateRangeProgress(event);
+};
+
+const updateRangeProgress = (event) => {
+  const target = event.target;
+  const min = parseFloat(target.min);
+  const max = parseFloat(target.max);
+  const val = parseFloat(target.value);
+  const percentage = ((val - min) * 100) / (max - min);
+  target.style.setProperty('--range-progress', `${percentage}%`);
+};
+
+// Lifecycle hooks
+onMounted(() => {
+  if (ratingSlider.value) {
+    const slider = ratingSlider.value;
+    const min = parseFloat(slider.min);
+    const max = parseFloat(slider.max);
+    const val = parseFloat(props.modelValue.minRating);
+    const percentage = ((val - min) * 100) / (max - min);
+    slider.style.setProperty('--range-progress', `${percentage}%`);
+  }
+});
 </script>
 
 <style scoped>
@@ -232,14 +240,14 @@ export default {
   padding: 0;
 }
 
-/* Quito los estilos de foco para un diseño más limpio */
+/* Remove focus styles for a cleaner design */
 .filter-group input[type="range"]:focus {
   outline: none;
   box-shadow: none;
   border: none;
 }
 
-/* Estos son mis estilos personalizados para el control deslizante */
+/* Custom styles for the slider control */
 .filter-group input[type="range"]::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
@@ -259,7 +267,7 @@ export default {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  margin-top: -5px; /* Ajusto el pulgar para centrarlo en la pista */
+  margin-top: -5px; /* Adjust thumb to center it on the track */
   cursor: pointer;
 }
 

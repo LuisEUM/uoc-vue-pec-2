@@ -17,140 +17,273 @@
         class="sidebar-form"
       />
     </main>
+    <ToastMessage ref="toastRef" />
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 import AppHeader from "./components/AppHeader.vue";
 import FilterBar from "./components/FilterBar.vue";
 import CardBoard from "./components/CardBoard.vue";
 import CardForm from "./components/CardForm.vue";
-import showsData from "./mockData/shows.json";
+import ToastMessage from "./components/ToastMessage.vue";
+import { useToast } from "./composables/useToast";
 
-export default {
-  name: "App",
-  components: {
-    AppHeader,
-    FilterBar,
-    CardBoard,
-    CardForm,
-  },
-  data() {
-    return {
-      allShows: [],
-      filters: {
-        searchTerm: "",
-        tag: "",
-        minRating: 0,
-        sortBy: "title",
-        sortOrder: "asc",
-      },
-      isFormVisible: false,
-      showBeingEdited: null,
-    };
-  },
-  computed: {
-    availableTags() {
-      const tagsSet = new Set();
-      this.allShows.forEach((show) => {
-        show.tags?.forEach((tag) => tagsSet.add(tag));
-      });
-      return Array.from(tagsSet).sort();
-    },
-    filteredAndSortedShows() {
-      let result = [...this.allShows];
+// Toast setup
+const toastRef = ref(null);
+const toast = useToast();
 
-      if (this.filters.searchTerm) {
-        const term = this.filters.searchTerm.toLowerCase();
-        result = result.filter(
-          (show) =>
-            show.title.toLowerCase().includes(term) ||
-            show.description.toLowerCase().includes(term) ||
-            (show.tags && show.tags.some(tag => tag.toLowerCase().includes(term)))
-        );
-      }
+// Reactive state
+const allShows = ref([]);
+const filters = ref({
+  searchTerm: "",
+  tag: "",
+  minRating: 0,
+  sortBy: "title",
+  sortOrder: "asc",
+});
+const isFormVisible = ref(false);
+const showBeingEdited = ref(null);
 
-      if (this.filters.tag) {
-        result = result.filter((show) => show.tags?.includes(this.filters.tag));
-      }
+// API base URLs
+const SHOWS_URL = 'http://localhost:3000/shows';
+const SHOW_URL = 'http://localhost:3000/show';
 
-      if (this.filters.minRating > 0) {
-        result = result.filter((show) => show.rating >= this.filters.minRating);
-      }
+// Computed properties
+const availableTags = computed(() => {
+  const tagsSet = new Set();
+  allShows.value.forEach((show) => {
+    show.tags?.forEach((tag) => tagsSet.add(tag));
+  });
+  return Array.from(tagsSet).sort();
+});
 
-      result.sort((a, b) => {
-        let valA = a[this.filters.sortBy];
-        let valB = b[this.filters.sortBy];
+const filteredAndSortedShows = computed(() => {
+  let result = [...allShows.value];
 
-        if (typeof valA === "string") valA = valA.toLowerCase();
-        if (typeof valB === "string") valB = valB.toLowerCase();
+  if (filters.value.searchTerm) {
+    const term = filters.value.searchTerm.toLowerCase();
+    result = result.filter(
+      (show) =>
+        show.title.toLowerCase().includes(term) ||
+        show.description.toLowerCase().includes(term) ||
+        (show.tags && show.tags.some(tag => tag.toLowerCase().includes(term)))
+    );
+  }
 
-        if (valA == null) return 1;
-        if (valB == null) return -1;
+  if (filters.value.tag) {
+    result = result.filter((show) => show.tags?.includes(filters.value.tag));
+  }
 
-        let comparison = 0;
-        if (valA < valB) comparison = -1;
-        if (valA > valB) comparison = 1;
+  if (filters.value.minRating > 0) {
+    result = result.filter((show) => show.rating >= filters.value.minRating);
+  }
 
-        return this.filters.sortOrder === "asc" ? comparison : comparison * -1;
-      });
+  result.sort((a, b) => {
+    let valA = a[filters.value.sortBy];
+    let valB = b[filters.value.sortBy];
 
-      return result;
-    },
-  },
-  methods: {
-    fetchShows() {
-      // Aquí cargo los datos desde mi archivo JSON
-      this.allShows = showsData.map((show) => ({
-        ...show,
-        // Me aseguro de que todas las propiedades necesarias estén presentes
-        tags: show.tags
-          ? show.tags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
-          : [],
-        releaseDate: show.releaseDate || show.year || "Unknown",
-        rating: show.rating || 0,
-        notes: show.notes || "",
-        id: show.id || Date.now() + Math.floor(Math.random() * 1000),
-      }));
-    },
-    deleteShow(showId) {
-      this.allShows = this.allShows.filter((show) => show.id !== showId);
-      if (this.showBeingEdited?.id === showId) {
-        this.closeForm();
-      }
-    },
-    saveShow(showData) {
-      const index = this.allShows.findIndex((s) => s.id === showData.id);
-      if (index !== -1) {
-        this.allShows.splice(index, 1, showData);
+    if (typeof valA === "string") valA = valA.toLowerCase();
+    if (typeof valB === "string") valB = valB.toLowerCase();
+
+    if (valA == null) return 1;
+    if (valB == null) return -1;
+
+    let comparison = 0;
+    if (valA < valB) comparison = -1;
+    if (valA > valB) comparison = 1;
+
+    return filters.value.sortOrder === "asc" ? comparison : comparison * -1;
+  });
+
+  return result;
+});
+
+// Methods
+const fetchShows = async () => {
+  try {
+    const response = await axios.get(SHOWS_URL);
+    console.log('API Response:', response.data);
+    
+    // The API wraps the actual data in a 'data' property inside the response
+    // Check if response.data has the expected structure
+    if (response.data && response.data.data) {
+      // The actual shows data is in response.data.data
+      const showsData = response.data.data;
+      
+      if (Array.isArray(showsData)) {
+        allShows.value = showsData.map((show) => ({
+          ...show,
+          tags: show.tags
+            ? show.tags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
+            : [],
+          releaseDate: show.releaseDate || show.year || "Unknown",
+          rating: show.rating || 0,
+          notes: show.notes || "",
+        }));
+        
+        if (allShows.value.length > 0) {
+          toast.showSuccess('Data Loaded', `Successfully loaded ${allShows.value.length} shows`);
+        } else {
+          toast.showInfo('No Shows', 'No shows found in the database. Add some!');
+        }
       } else {
-        if (!showData.id) showData.id = Date.now();
-        this.allShows.push(showData);
+        console.error('Expected array in data property but got:', typeof showsData);
+        allShows.value = [];
+        toast.showError('Data Format Error', `API returned unexpected format in 'data' property: ${typeof showsData}`);
       }
-      this.closeForm();
-    },
-    openAddForm() {
-      this.showBeingEdited = null;
-      this.isFormVisible = true;
-    },
-    closeForm() {
-      this.isFormVisible = false;
-      this.showBeingEdited = null;
-    },
-    resetFilters() {
-      this.filters = {
-        searchTerm: "",
-        tag: "",
-        minRating: 0,
-        sortBy: "title",
-        sortOrder: "asc",
-      };
-    },
-  },
-  mounted() {
-    this.fetchShows();
-  },
+    } else {
+      // Handle case where response.data doesn't have the expected structure
+      console.error('Expected { data: [] } structure but got:', response.data);
+      allShows.value = [];
+      toast.showError('Data Format Error', 'API returned unexpected data structure');
+    }
+  } catch (error) {
+    console.error('Error fetching shows:', error);
+    allShows.value = [];
+    
+    if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
+      toast.showError('API Connection Failed', 'Cannot connect to API server. Make sure it is running on port 3000.');
+    } else {
+      toast.showApiError(error, 'Failed to load shows');
+    }
+    
+    // Rethrow to allow retry mechanism to work
+    throw error;
+  }
 };
+
+const deleteShow = async (showId) => {
+  try {
+    const deleteResponse = await axios.delete(`${SHOW_URL}/${showId}`);
+    console.log('Delete response:', deleteResponse.data);
+    
+    // Refresh the shows list
+    await fetchShows();
+    
+    if (showBeingEdited.value?.id === showId) {
+      closeForm();
+    }
+    toast.showSuccess('Show Deleted', 'The show has been successfully deleted');
+  } catch (error) {
+    console.error('Error deleting show:', error);
+    toast.showApiError(error, 'Failed to delete show');
+  }
+};
+
+const saveShow = async (showData) => {
+  try {
+    // Log what we're sending to help debug
+    console.log('Preparing to send to API:', showData);
+    
+    // Make sure we have the required fields
+    if (!showData.title || !showData.description || !showData.image || !showData.releaseDate) {
+      const missingFields = [];
+      if (!showData.title) missingFields.push('title');
+      if (!showData.description) missingFields.push('description');
+      if (!showData.image) missingFields.push('image');
+      if (!showData.releaseDate) missingFields.push('releaseDate');
+      
+      toast.showError('Missing Fields', `Required fields missing: ${missingFields.join(', ')}`);
+      return;
+    }
+    
+    // Ensure we're sending the right data types
+    const apiData = {
+      ...showData,
+      rating: Number(showData.rating) || 0,
+      tags: Array.isArray(showData.tags) ? showData.tags : ['uncategorized'],
+      // Make sure releaseDate is a string
+      releaseDate: typeof showData.releaseDate === 'string' ? showData.releaseDate : new Date().toISOString().split('T')[0]
+    };
+    
+    let saveResponse;
+    
+    // If we're editing an existing show
+    if (apiData.id) {
+      console.log('PUT request to:', `${SHOW_URL}/${apiData.id}`);
+      saveResponse = await axios.put(`${SHOW_URL}/${apiData.id}`, apiData);
+      console.log('Update response:', saveResponse.data);
+      toast.showSuccess('Show Updated', 'The show has been successfully updated');
+    } else {
+      // If we're adding a new show
+      console.log('POST request to:', SHOW_URL, 'with data:', apiData);
+      saveResponse = await axios.post(SHOW_URL, apiData);
+      console.log('Create response:', saveResponse.data);
+      
+      // Extract the show data from the response
+      if (saveResponse.data && saveResponse.data.data && saveResponse.data.data.id) {
+        toast.showSuccess('Show Added', `The new show has been successfully added with ID: ${saveResponse.data.data.id}`);
+      } else {
+        toast.showSuccess('Show Added', 'The new show has been successfully added');
+      }
+    }
+    
+    // Refresh the shows list
+    await fetchShows();
+    
+    closeForm();
+  } catch (error) {
+    console.error('Error saving show:', error);
+    
+    // Detailed error logging
+    if (error.response) {
+      console.error('Response status:', error.response.status);
+      console.error('Response data:', error.response.data);
+      
+      if (error.response.data && error.response.data.message) {
+        toast.showError('API Error', error.response.data.message);
+        return;
+      }
+    }
+    
+    const action = showData.id ? 'update' : 'add';
+    toast.showApiError(error, `Failed to ${action} show`);
+  }
+};
+
+const openAddForm = () => {
+  showBeingEdited.value = null;
+  isFormVisible.value = true;
+};
+
+const closeForm = () => {
+  isFormVisible.value = false;
+  showBeingEdited.value = null;
+};
+
+const resetFilters = () => {
+  filters.value = {
+    searchTerm: "",
+    tag: "",
+    minRating: 0,
+    sortBy: "title",
+    sortOrder: "asc",
+  };
+};
+
+// Lifecycle hooks
+onMounted(async () => {
+  try {
+    // First attempt
+    await fetchShows();
+  } catch (error) {
+    console.error('Initial fetch failed, will retry in 2 seconds:', error);
+    toast.showWarning('Connection Issue', 'Attempting to connect to API server...');
+    
+    // Wait 2 seconds and retry
+    setTimeout(async () => {
+      try {
+        await fetchShows();
+      } catch (retryError) {
+        console.error('Retry failed:', retryError);
+        toast.showError('Connection Failed', 'Could not connect to API server. Please check if it is running.');
+      }
+    }, 2000);
+  }
+});
 </script>
 
 <style>
