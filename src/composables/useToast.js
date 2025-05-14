@@ -1,15 +1,20 @@
 /**
- * Composable for showing toast notifications across the application
+ * Este es mi composable para mostrar notificaciones toast en toda la aplicación
+ * Un composable es como un custom hook en React, pero para Vue - me encanta esta característica de Vue 3!
  */
 export function useToast() {
   /**
-   * Show a toast notification
-   * @param {string} title - The toast title
-   * @param {string} message - The toast message
-   * @param {string} type - The toast type: 'error', 'success', 'warning', 'info'
-   * @param {number} timeout - Time in milliseconds before toast disappears (0 for no auto-close)
+   * Función base para mostrar una notificación toast
+   * Uso un CustomEvent para comunicarme entre componentes sin necesidad de props/emits
+   *
+   * @param {string} title - El título del toast
+   * @param {string} message - El mensaje del toast
+   * @param {string} type - El tipo de toast: 'error', 'success', 'warning', 'info'
+   * @param {number} timeout - Tiempo en milisegundos antes de que desaparezca (0 para que no se cierre automáticamente)
    */
   const showToast = (title, message, type = "info", timeout = 5000) => {
+    // Uso eventos custom del navegador para comunicarme con el componente ToastMessage
+    // Esto me permite mostrar toasts desde cualquier parte de la app sin pasar props
     window.dispatchEvent(
       new CustomEvent("toast", {
         detail: { title, message, type, timeout },
@@ -18,49 +23,60 @@ export function useToast() {
   };
 
   /**
-   * Show an error toast notification
-   * @param {string} title - The toast title
-   * @param {string} message - The toast message
-   * @param {number} timeout - Time in milliseconds before toast disappears
+   * Función para mostrar un toast de error (rojo)
+   * Esta es un wrapper sobre showToast para simplificar su uso
+   *
+   * @param {string} title - El título del toast
+   * @param {string} message - El mensaje del toast
+   * @param {number} timeout - Tiempo en ms antes de que desaparezca
    */
   const showError = (title, message, timeout = 5000) => {
     showToast(title, message, "error", timeout);
   };
 
   /**
-   * Show a success toast notification
-   * @param {string} title - The toast title
-   * @param {string} message - The toast message
-   * @param {number} timeout - Time in milliseconds before toast disappears
+   * Función para mostrar un toast de éxito (verde)
+   * Uso esto cuando la operación se completa correctamente
+   *
+   * @param {string} title - El título del toast
+   * @param {string} message - El mensaje del toast
+   * @param {number} timeout - Tiempo en ms antes de que desaparezca
    */
   const showSuccess = (title, message, timeout = 5000) => {
     showToast(title, message, "success", timeout);
   };
 
   /**
-   * Show a warning toast notification
-   * @param {string} title - The toast title
-   * @param {string} message - The toast message
-   * @param {number} timeout - Time in milliseconds before toast disappears
+   * Función para mostrar un toast de advertencia (amarillo)
+   * Para alertar al usuario de algo importante pero no crítico
+   *
+   * @param {string} title - El título del toast
+   * @param {string} message - El mensaje del toast
+   * @param {number} timeout - Tiempo en ms antes de que desaparezca
    */
   const showWarning = (title, message, timeout = 5000) => {
     showToast(title, message, "warning", timeout);
   };
 
   /**
-   * Show an info toast notification
-   * @param {string} title - The toast title
-   * @param {string} message - The toast message
-   * @param {number} timeout - Time in milliseconds before toast disappears
+   * Función para mostrar un toast informativo (azul)
+   * Para mensajes neutros o informativos
+   *
+   * @param {string} title - El título del toast
+   * @param {string} message - El mensaje del toast
+   * @param {number} timeout - Tiempo en ms antes de que desaparezca
    */
   const showInfo = (title, message, timeout = 5000) => {
     showToast(title, message, "info", timeout);
   };
 
   /**
-   * Show API error toast notification with appropriate message based on error
-   * @param {Error} error - The error object from Axios or other API calls
-   * @param {string} fallbackMessage - Fallback message if no specific error is found
+   * Esta función especial maneja errores de API
+   * Analiza el objeto de error de Axios y muestra un mensaje apropiado
+   * Muy útil para no repetir lógica en cada llamada API
+   *
+   * @param {Error} error - El objeto de error de Axios u otras llamadas API
+   * @param {string} fallbackMessage - Mensaje por defecto si no se encuentra un error específico
    */
   const showApiError = (
     error,
@@ -70,8 +86,8 @@ export function useToast() {
     let message = fallbackMessage;
 
     if (error?.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
+      // La petición se hizo y el servidor respondió con un código de estado
+      // que cae fuera del rango 2xx (éxito)
       const status = error.response.status;
       if (status === 404) {
         message = "The requested resource was not found";
@@ -82,20 +98,24 @@ export function useToast() {
       } else if (status === 500) {
         message = "Internal server error";
       } else if (error.response.data?.message) {
+        // Si la API devuelve un mensaje específico, lo uso
         message = error.response.data.message;
       }
     } else if (error?.request) {
-      // The request was made but no response was received
+      // La petición se hizo pero no se recibió respuesta
+      // Esto suele ser un problema de red o servidor apagado
       title = "Network Error";
       message = "No response from server. Please check your connection.";
     } else if (error?.message) {
-      // Something happened in setting up the request
+      // Algo ocurrió al configurar la petición
+      // Estos son errores del cliente, no del servidor
       message = error.message;
     }
 
     showError(title, message);
   };
 
+  // Expongo todas las funciones para usarlas donde las necesite
   return {
     showToast,
     showError,

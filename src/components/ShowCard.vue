@@ -1,5 +1,7 @@
 <template>
+  <!-- Esta es mi tarjeta de show, personalizo el color del borde superior según el show -->
   <div class="show-card" :style="{ borderTopColor: show.color || '#42b983' }">
+    <!-- Botón de eliminar que solo se muestra si la prop deletable es true -->
     <button
       v-if="deletable"
       @click="$emit('deleteShow', show.id)"
@@ -7,18 +9,23 @@
     >
       <img src="/src/assets/delete.svg" alt="Delete" class="delete-icon" />
     </button>
+    <!-- Contenido principal de la tarjeta con evento click para seleccionar -->
     <div class="show-content" @click="$emit('select', show)">
+      <!-- Contenedor para la imagen con tamaño fijo -->
       <div class="show-image-container">
         <img :src="show.image" :alt="show.title" class="show-image" />
       </div>
+      <!-- Detalles del show con layout en columna -->
       <div class="show-details">
         <h3>{{ show.title }}</h3>
         <p class="description">{{ show.description }}</p>
         <p class="year" v-if="show.year">{{ show.year }}</p>
+        <!-- Tags del show con v-if para asegurarme que existan -->
         <div class="tags" v-if="show.tags && show.tags.length">
           <span v-for="tag in show.tags" :key="tag" class="tag">{{ tag }}</span>
         </div>
         <p class="notes" v-if="show.notes">{{ show.notes }}</p>
+        <!-- Sistema de rating con estrellas usando un truco de CSS -->
         <div class="rating">
           <span
             v-for="i in 5"
@@ -34,33 +41,35 @@
 </template>
 
 <script setup>
-// Define props and emits
+// Defino las props que recibe mi componente
 const props = defineProps({
-  // The complete show object to display
+  // El objeto completo del show con todos sus datos
   show: {
     type: Object,
-    required: true,
+    required: true, // Siempre necesito un show para renderizar
   },
-  // Whether to show the delete button
+  // Controla si se muestra el botón de eliminar
+  // Por defecto no lo muestro para reutilizar el componente en modo "solo lectura"
   deletable: {
     type: Boolean,
     default: false,
   },
 });
 
-// Define emits for delete and select events
+// Defino los eventos que puede emitir mi componente
+// Me gusta mantener la comunicación con componentes padre mediante eventos
 defineEmits(['deleteShow', 'select']);
 </script>
 
 <style scoped>
-/* Card design with customized top border for each show */
+/* Diseño de tarjeta con borde superior personalizable para cada show */
 .show-card {
   background: white;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: hidden; /* Para que las imágenes no se salgan */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  border-top: 5px solid;
+  border-top: 5px solid; /* El color lo especifico con style binding */
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   display: flex;
   height: 100%;
@@ -68,13 +77,13 @@ defineEmits(['deleteShow', 'select']);
   min-height: 100%;
 }
 
-/* Small elevation effect on hover */
+/* Efecto de elevación al pasar el mouse para mejor UX */
 .show-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px); /* Se eleva ligeramente */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
 }
 
-/* Delete button in the top right corner */
+/* Botón de eliminar en la esquina superior derecha */
 .delete-btn {
   position: absolute;
   top: 10px;
@@ -87,43 +96,43 @@ defineEmits(['deleteShow', 'select']);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1;
+  z-index: 1; /* Para que quede encima del contenido */
   padding: 0;
 }
 
-/* Delete icon size */
+/* Tamaño del icono de eliminar */
 .delete-icon {
   width: 44px;
   height: 44px;
 }
 
-/* Horizontal content layout */
+/* Layout horizontal para el contenido */
 .show-content {
   display: flex;
   width: 100%;
   height: 100%;
 }
 
-/* Fixed width for the image container */
+/* Ancho fijo para el contenedor de imagen */
 .show-image-container {
   width: 120px;
   height: auto;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Evito que se encoja con el contenido */
   overflow: hidden;
   position: relative;
-  background-color: #000;
+  background-color: #000; /* Fondo negro en caso de imágenes transparentes */
 }
 
-/* Make sure the image covers the assigned space well */
+/* Me aseguro que la imagen cubra bien el espacio asignado */
 .show-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Recorta la imagen para que cubra todo el contenedor */
   object-position: center;
   min-height: 100%;
 }
 
-/* Organize details in a flexible column */
+/* Organizo los detalles en una columna flexible */
 .show-details {
   padding: 15px;
   flex-grow: 1;
@@ -132,45 +141,45 @@ defineEmits(['deleteShow', 'select']);
   flex-direction: column;
 }
 
-/* Style the title to make it stand out */
+/* Estilo el título para que destaque */
 .show-details h3 {
   margin: 0 0 10px;
   font-size: 1.2em;
   font-weight: bold;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; /* Trunco el texto con ... si es muy largo */
   color: #2c3e50;
 }
 
-/* Limit description to two lines with ellipsis */
+/* Limito la descripción a tres líneas con elipsis */
 .description {
   font-size: 0.9em;
   color: #666;
   margin-bottom: 10px;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 3; /* Máximo 3 líneas */
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
 }
 
-/* Subtle style for release year */
+/* Estilo sutil para el año de lanzamiento */
 .year {
   font-size: 0.85em;
   color: #888;
   margin-bottom: 8px;
 }
 
-/* Organize tags in a flexible container */
+/* Organizo los tags en un contenedor flexible */
 .tags {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Para que salten a la siguiente línea si no caben */
   gap: 5px;
   margin-bottom: 10px;
 }
 
-/* Design each tag as a small pill */
+/* Diseño cada tag como una pequeña píldora */
 .tag {
   background: #f5f5f5;
   padding: 3px 8px;
@@ -179,39 +188,39 @@ defineEmits(['deleteShow', 'select']);
   color: #666;
 }
 
-/* Push stars to the bottom with margin-top: auto */
+/* Empujo las estrellas al final de la tarjeta con margin-top: auto */
 .rating {
   margin-bottom: 10px;
-  margin-top: auto;
+  margin-top: auto; /* Esto las coloca siempre al final */
   display: flex;
 }
 
-/* Gray stars by default */
+/* Estrellas grises por defecto */
 .star {
   color: #ddd;
   font-size: 18px;
 }
 
-/* Gold stars for rating */
+/* Estrellas doradas para la puntuación */
 .star.filled {
   color: gold;
 }
 
-/* Style notes as smaller text in italics */
+/* Estilo las notas como texto más pequeño en cursiva */
 .notes {
   font-size: 0.85em;
   color: #666;
   font-style: italic;
   margin: 5px 0;
   display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
+  line-clamp: 2; /* Propiedad estándar */
+  -webkit-line-clamp: 2; /* Propiedad específica para webkit */
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
 }
 
-/* Adjust minimum height on mobile devices */
+/* Ajusto la altura mínima en dispositivos móviles */
 @media (max-width: 768px) {
   .show-card {
     min-height: 250px;
