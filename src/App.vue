@@ -8,7 +8,9 @@
       :tag-options="availableTags"
     />
     <main class="content-area">
-      <CardBoard :showList="filteredAndSortedShows" @deleteShow="deleteShow" />
+      <div class="main-content">
+        <CardBoard :showList="filteredAndSortedShows" @deleteShow="deleteShow" />
+      </div>
       <CardForm
         v-if="isFormVisible"
         :show-to-edit="showBeingEdited"
@@ -38,11 +40,11 @@ const toast = useToast();
 // Reactive state
 const allShows = ref([]);
 const filters = ref({
-  searchTerm: "",
-  tag: "",
-  minRating: 0,
-  sortBy: "title",
-  sortOrder: "asc",
+        searchTerm: "",
+        tag: "",
+        minRating: 0,
+        sortBy: "title",
+        sortOrder: "asc",
 });
 const isFormVisible = ref(false);
 const showBeingEdited = ref(null);
@@ -53,11 +55,11 @@ const SHOW_URL = 'http://localhost:3000/show';
 
 // Computed properties
 const availableTags = computed(() => {
-  const tagsSet = new Set();
+      const tagsSet = new Set();
   allShows.value.forEach((show) => {
-    show.tags?.forEach((tag) => tagsSet.add(tag));
-  });
-  return Array.from(tagsSet).sort();
+        show.tags?.forEach((tag) => tagsSet.add(tag));
+      });
+      return Array.from(tagsSet).sort();
 });
 
 const filteredAndSortedShows = computed(() => {
@@ -65,40 +67,40 @@ const filteredAndSortedShows = computed(() => {
 
   if (filters.value.searchTerm) {
     const term = filters.value.searchTerm.toLowerCase();
-    result = result.filter(
-      (show) =>
-        show.title.toLowerCase().includes(term) ||
-        show.description.toLowerCase().includes(term) ||
-        (show.tags && show.tags.some(tag => tag.toLowerCase().includes(term)))
-    );
-  }
+        result = result.filter(
+          (show) =>
+            show.title.toLowerCase().includes(term) ||
+            show.description.toLowerCase().includes(term) ||
+            (show.tags && show.tags.some(tag => tag.toLowerCase().includes(term)))
+        );
+      }
 
   if (filters.value.tag) {
     result = result.filter((show) => show.tags?.includes(filters.value.tag));
-  }
+      }
 
   if (filters.value.minRating > 0) {
     result = result.filter((show) => show.rating >= filters.value.minRating);
-  }
+      }
 
-  result.sort((a, b) => {
+      result.sort((a, b) => {
     let valA = a[filters.value.sortBy];
     let valB = b[filters.value.sortBy];
 
-    if (typeof valA === "string") valA = valA.toLowerCase();
-    if (typeof valB === "string") valB = valB.toLowerCase();
+        if (typeof valA === "string") valA = valA.toLowerCase();
+        if (typeof valB === "string") valB = valB.toLowerCase();
 
-    if (valA == null) return 1;
-    if (valB == null) return -1;
+        if (valA == null) return 1;
+        if (valB == null) return -1;
 
-    let comparison = 0;
-    if (valA < valB) comparison = -1;
-    if (valA > valB) comparison = 1;
+        let comparison = 0;
+        if (valA < valB) comparison = -1;
+        if (valA > valB) comparison = 1;
 
     return filters.value.sortOrder === "asc" ? comparison : comparison * -1;
-  });
+      });
 
-  return result;
+      return result;
 });
 
 // Methods
@@ -115,13 +117,13 @@ const fetchShows = async () => {
       
       if (Array.isArray(showsData)) {
         allShows.value = showsData.map((show) => ({
-          ...show,
-          tags: show.tags
-            ? show.tags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
-            : [],
-          releaseDate: show.releaseDate || show.year || "Unknown",
-          rating: show.rating || 0,
-          notes: show.notes || "",
+        ...show,
+        tags: show.tags
+          ? show.tags.map((tag) => tag.charAt(0).toUpperCase() + tag.slice(1))
+          : [],
+        releaseDate: show.releaseDate || show.year || "Unknown",
+        rating: show.rating || 0,
+        notes: show.notes || "",
         }));
         
         if (allShows.value.length > 0) {
@@ -165,7 +167,7 @@ const deleteShow = async (showId) => {
     
     if (showBeingEdited.value?.id === showId) {
       closeForm();
-    }
+      }
     toast.showSuccess('Show Deleted', 'The show has been successfully deleted');
   } catch (error) {
     console.error('Error deleting show:', error);
@@ -256,12 +258,12 @@ const closeForm = () => {
 
 const resetFilters = () => {
   filters.value = {
-    searchTerm: "",
-    tag: "",
-    minRating: 0,
-    sortBy: "title",
-    sortOrder: "asc",
-  };
+        searchTerm: "",
+        tag: "",
+        minRating: 0,
+        sortBy: "title",
+        sortOrder: "asc",
+      };
 };
 
 // Lifecycle hooks
@@ -301,7 +303,6 @@ onMounted(async () => {
   flex-grow: 1;
   position: relative;
   gap: 20px;
-  min-height: 75dvh;
   width: 100%;
   padding-bottom: 40px;
 }
@@ -310,7 +311,11 @@ main {
   display: flex;
   flex-grow: 1;
   gap: 20px;
-  height: 100%;
+  width: 100%;
+}
+
+.main-content {
+  flex: 1;
   width: 100%;
 }
 
@@ -335,10 +340,27 @@ main {
     min-height: auto;
   }
 
+  .main-content {
+    order: 2;
+  }
+
   .sidebar-form {
     width: 100%;
     position: static;
     max-height: none;
+    margin-top: 0;
+    margin-bottom: 20px;
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  #app-layout {
+    padding: 0 10px;
+  }
+  
+  .content-area {
+    padding-bottom: 20px;
   }
 }
 </style>

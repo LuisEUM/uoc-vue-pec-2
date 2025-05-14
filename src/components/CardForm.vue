@@ -259,6 +259,7 @@ onMounted(() => {
   background-color: #393a41;
   color: white;
   min-width: 400px;
+  min-height: 100%;
 }
 
 .form-header {
@@ -428,7 +429,18 @@ input[type="color"] {
 
 @media (max-width: 1200px) {
   .show-form {
-    max-height: none;
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .show-form {
+    padding: 15px;
+    min-height: 300px;
+  }
+  
+  .form-header h2 {
+    font-size: 18px;
   }
 }
 </style> 

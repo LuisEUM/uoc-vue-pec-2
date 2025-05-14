@@ -10,7 +10,9 @@
       />
     </div>
 
-    <Pagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+    <div class="pagination-container">
+      <Pagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+    </div>
   </div>
 </template>
 
@@ -57,22 +59,20 @@ watch(
 .grid-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 80dvh;
-  flex: 1;
+  min-height: 80vh;
   width: 100%;
   position: relative;
-  padding-bottom: 80px;
+  padding-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .card-board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, auto);
-  gap: 20px;
+  grid-auto-rows: minmax(320px, auto);
+  gap: 25px;
   padding: 20px;
   width: 100%;
-  padding-bottom: 60px;
 }
 
 .card-board:empty {
@@ -82,19 +82,28 @@ watch(
   font-size: 1.2em;
   color: #666;
   text-align: center;
+  height: 300px;
+}
+
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  margin-top: auto;
 }
 
 @media (max-width: 1200px) {
   .card-board {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, auto);
+    grid-auto-rows: minmax(300px, auto);
   }
 }
 
 @media (max-width: 768px) {
   .card-board {
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(6, auto);
+    grid-auto-rows: minmax(280px, auto);
   }
 }
 </style>

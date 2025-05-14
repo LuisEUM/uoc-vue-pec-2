@@ -58,20 +58,20 @@ defineEmits(['deleteShow', 'select']);
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: relative;
   border-top: 5px solid;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   display: flex;
   height: 100%;
-  min-height: 280px;
-  max-height: 350px;
   flex-direction: row;
+  min-height: 100%;
 }
 
 /* Small elevation effect on hover */
 .show-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Delete button in the top right corner */
@@ -107,7 +107,7 @@ defineEmits(['deleteShow', 'select']);
 /* Fixed width for the image container */
 .show-image-container {
   width: 120px;
-  height: 100%;
+  height: auto;
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
@@ -120,6 +120,7 @@ defineEmits(['deleteShow', 'select']);
   height: 100%;
   object-fit: cover;
   object-position: center;
+  min-height: 100%;
 }
 
 /* Organize details in a flexible column */
@@ -148,8 +149,7 @@ defineEmits(['deleteShow', 'select']);
   color: #666;
   margin-bottom: 10px;
   display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;

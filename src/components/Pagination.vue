@@ -55,14 +55,12 @@ defineEmits(['update:currentPage']);
   justify-content: center;
   align-items: center;
   gap: 20px;
-  position: absolute; /* Change to absolute positioning */
-  bottom: 0; /* Anchor to the bottom of the container */
-  left: 0;
-  right: 0;
-  margin: 0; /* Remove margins */
-  padding: 30px 0;
-  z-index: 10; /* Keep high z-index to ensure it's above the grid */
-  background: linear-gradient(to top, rgba(233, 236, 239, 1) 60%, rgba(233, 236, 239, 0)); /* Add gradient for better visibility */
+  width: fit-content;
+  padding: 10px 30px;
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
 }
 
 /* Group page numbers with consistent spacing */
@@ -76,13 +74,12 @@ defineEmits(['update:currentPage']);
 .page-number {
   padding: 10px 18px;
   border: none;
-  border-radius: 8px; /* Increase border-radius for better appearance */
-  background: white;
+  border-radius: 8px;
+  background: #f8f9fa;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Increase shadow for better visibility */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
-  z-index: 11; /* Increase z-index to ensure it's above the pagination background */
 }
 
 /* Visually disable buttons when not usable */
@@ -94,23 +91,25 @@ defineEmits(['update:currentPage']);
 
 /* Keep consistent size for number buttons */
 .page-number {
-  min-width: 44px; /* Slightly increase size */
-  height: 44px; /* Slightly increase size */
+  min-width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500; /* Add some weight to the font */
+  font-weight: 500;
 }
 
 /* Highlight current page with primary color */
 .page-number.active {
   background: #4662f8;
   color: white;
+  box-shadow: 0 2px 8px rgba(70, 98, 248, 0.3);
 }
 
 /* Add hover effect to improve interactivity */
 .page-btn:hover:not(:disabled),
 .page-number:hover:not(.active) {
-  background: #f0f0f0;
+  background: #e9ecef;
+  transform: translateY(-2px);
 }
 </style> 
